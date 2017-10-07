@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>DEBUG实验室</title>
+    <link href="css/common.css" type="text/css" rel="stylesheet">
+    <link href="css/iconBtn.css" type="text/css" rel="stylesheet">
+    <link href="css/components.css" type="text/css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        /*
+         原理：1.把所有的li的高度值放到数组里面
+         2.第一行的top都为0
+         3.计算高度值最小的值是哪个li
+         4.把接下来的li放到那个li的下面
+         */
+
+        function liuxiaofan (){
+            var li= $(".product_list");//区块名称
+            console.log(li);
+            var    li_W = li[0].offsetWidth;//取区块的实际宽度
+            var    node_W =$(".node")[0].offsetWidth;//取区块的实际宽度
+            var h=[];//记录区块高度的数组
+            var n = node_W/li_W|0;
+            for(var i = 0;i < li.length;i++) {
+                var li_H = li[i].offsetHeight;//获取每个li的高度
+                if(i < n) {//n是一行最多的li，所以小于n就是第一行了
+                    var max_H =Math.max.apply(null,h);
+                    h[i]=li_H;//把每个li放到数组里面
+                    li.eq(i).css("top",0);//第一行的Li的top值为0
+                    li.eq(i).css("left",i * li_W);//第i个li的左坐标就是i*li的宽度
+                }
+                else{
+                    var min_H =Math.min.apply(null,h) ;//取得数组中的最小值，区块中高度值最小的那个
+                    var minKey = getarraykey(h, min_H);//最小的值对应的指针
+                    h[minKey] += li_H ;//加上新高度后更新高度值
+                    li.eq(i).css("top",min_H);//先得到高度最小的Li，然后把接下来的li放到它的下面
+                    li.eq(i).css("left",minKey * li_W);    //第i个li的左坐标就是i*li的宽度
+                }
+                //  $("p").eq(i).text("高度："+li_H);//把区块高度值写入对应的区块H2标题里面
+            }
+            max =Math.max.apply(null,h) ;
+            var masonry_W =li_W*n;
+            $("#masonry").css("height",max);
+            $("#masonry").css("left",(node_W-masonry_W)/2);
+
+        }
+        /* 使用for in运算返回数组中某一值的对应项数(比如算出最小的高度值是数组里面的第几个) */
+        function getarraykey(s, v) {for(k in s) {if(s[k] == v) {return k;}}}
+        /*这里一定要用onload，因为图片不加载完就不知道高度值*/
+        window.onload = function() {liuxiaofan();};
+        window.onresize = function() {liuxiaofan();};
+
+    </script>
+</head>
+<body>
+<div role="headerOver"id="headerOver">
+    <div id="header">
+        <div id="logo">
+            <div id="header_logo" class="fleft">
+                <img src="img/icon/logo.png" class="fleft">
+                <h1 class="ffb cdb fleft fsize24">DE<span class="clb" >BUG</span></h1>
+            </div>
+            <div id="nav" class="fleft">
+                <ul class="nav_menu fleft clg">
+                    <li  id = "in_content" class="unactive">实验室简介</li>
+                    <li id = "friends" class="unactive">良师益友</li>
+                    <li id="team" class="active cdb">团队动态</li>
+                    <li id = "studyCont" class="unactive">学习内容</li>
+                    <li id = "forum"  class="unactive">论坛</li>
+                </ul>
+            </div>
+            <div id="header_login" class="fright">
+                <!-- <button class="btn_a bglb cw fright">注册</button>
+                  <button class="btn_a bglb cw fright">登录</button>-->
+                <div class="login_sus">
+                    <span>王诗雨</span>
+                    <button class="btn_a bglb cw">退出</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="main">
+    <div class="screen">
+    </div>
+        <div class="content">
+            <div class=""></div>
+        </div>
+
+</div>
+<!--<footer>
+    <div class="footer_over">
+        <ul>
+            <li class="foot_active">实验室简介</li>
+            <li>良师益友</li>
+            <li>团队动态</li>
+            <li>学习内容</li>
+            <li>论坛</li>
+        </ul>
+        <ul>
+            <li class="foot_active">
+                <img src="img/icon/java.png">
+                <div>java</div>
+            </li>
+            <li>
+                <img src="img/icon/javascript.png">
+                <div>javascript</div>
+            </li>
+            <li>
+                <img src="img/icon/python.png">
+                <div>python</div>
+            </li>
+            <li>
+                <img src="img/icon/UI.png">
+                <div>UI设计</div>
+            </li>
+            <li>
+                <img src="img/icon/icon_tcp.png">
+                <div>TCP/IP</div>
+            </li>
+            <li>
+                <img src="img/icon/jquery.png">
+                <div>jquery</div>
+            </li>
+            <li>
+                <img src="img/icon/css.png">
+                <div>css</div>
+            </li>
+        </ul>
+    </div>
+</footer>-->
+<div class="dialogOver"></div>
+<div id="loginDialog" class="dialog">
+    <div class="closeBox">
+        <span>登录</span>
+        <img src="img/icon/close.png" alt=""/>
+    </div>
+    <div class="DialogInp">
+        <input type="text" class="xuehao" placeholder="学号"/>
+        <input type="password" class="psw" placeholder="密码"/>
+        <button>登录</button>
+    </div>
+</div>
+<div id="registerDialog" class="dialog">
+    <div class="closeBox">
+        <span>注册</span>
+        <img src="img/icon/close.png" alt=""/>
+    </div>
+    <div class="DialogInp">
+        <input type="text" class="xuehao" placeholder="学号"/>
+        <input type="password" class="psw" placeholder="密码"/>
+        <button>注册</button>
+    </div>
+</div>
+</body>
+</html>

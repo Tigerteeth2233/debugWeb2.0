@@ -1,0 +1,14 @@
+/*图标按钮样式*/
+
+/*按钮*/
+
+.btn_a{
+    width: 30%;
+    border-radius: 3px;
+    border: none;
+    line-height: 24px;
+    margin-left: 9%;
+    cursor: pointer;
+}
+
+
